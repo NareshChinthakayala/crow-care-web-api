@@ -1,5 +1,5 @@
-import { Button } from "../../components/ui/Button";
-import { ProgressBar } from "../../components/ui/Display";
+import { Button } from "../../Components/ui/Button";
+import { Avatar, ProgressBar } from "../../Components/ui/Display";
 import { useData } from "../../context/data-context";
 import { formatTime, money } from "../../utils/format";
 import { isCompleted } from "../../utils/orders";
@@ -20,23 +20,12 @@ export function useOrderColumns({ onView, onAssign, compact = false } = {}) {
       main: true,
       render: (o) => {
         const service = getProduct(o.serviceId);
-        if (compact) {
-          return (
-            <>
-              <div className="cell-title">{o.customer}</div>
-              <div className="cell-sub">
-                {o.id} · {service?.service}
-              </div>
-            </>
-          );
-        }
         return (
           <>
-            <div className="cell-title">
-              {o.customer} <span className="cell-sub">· {o.id}</span>
-            </div>
+            <div className="cell-title">{o.customer}</div>
             <div className="cell-sub">
-              {service?.service} · {money(service?.servicePrice ?? 0)} · {o.source}
+              {o.id} · {service?.service}
+              {!compact && ` · ${money(service?.servicePrice ?? 0)}`}
             </div>
           </>
         );
@@ -46,28 +35,57 @@ export function useOrderColumns({ onView, onAssign, compact = false } = {}) {
     {
       key: "employee",
       header: "Employee",
-      render: (o) => getEmployee(o.employeeId)?.name ?? <span className="muted">Not assigned</span>,
+      render: (o) => {
+        const employee = getEmployee(o.employeeId);
+        if (!employee) return <span className="muted">Not assigned</span>;
+        return (
+          <div className="person">
+            <Avatar name={employee.name} size="sm" />
+            <span>{employee.name}</span>
+          </div>
+        );
+      },
     },
-    { key: "progress", header: "Progress", render: (o) => <ProgressBar value={o.progress} /> },
+    { key: "progress", header: "Progress", render: (o) => <ProgressBar value={o.progress} showLabel /> },
     { key: "status", header: "Status", render: (o) => <OrderStatusBadge status={o.status} /> },
-  ];
+  ].filter((col) => !(compact && col.key === "progress")); // dashboard card is narrow: status is enough there
 
   if (onView || onAssign) {
     columns.push({
       key: "actions",
-      header: "",
+      header: "Actions",
       label: "Actions",
+      align: "right",
       render: (o) => (
         <div className="row-actions">
-          {onView && (
-            <Button variant="outline" size="sm" onClick={() => onView(o.id)}>
-              View
+          {/* Unassigned → a clear "Assign" button (the main job on this page) */}
+          {onAssign && !isCompleted(o) && !o.employeeId && (
+            <Button size="sm" icon="userPlus" onClick={() => onAssign(o.id)}>
+              Assign
             </Button>
           )}
-          {onAssign && !isCompleted(o) && (
-            <Button variant={o.employeeId ? "outline" : "primary"} size="sm" onClick={() => onAssign(o.id)}>
-              {o.employeeId ? "Reassign" : "Assign"}
-            </Button>
+          {/* Already assigned → a small icon button to change the stylist */}
+          {onAssign && !isCompleted(o) && o.employeeId && (
+            <Button
+              variant="outline"
+              size="sm"
+              icon="userPlus"
+              className="btn-icon"
+              title="Reassign stylist"
+              aria-label={`Reassign ${o.id}`}
+              onClick={() => onAssign(o.id)}
+            />
+          )}
+          {onView && (
+            <Button
+              variant="outline"
+              size="sm"
+              icon="eye"
+              className="btn-icon"
+              title="View details"
+              aria-label={`View ${o.id}`}
+              onClick={() => onView(o.id)}
+            />
           )}
         </div>
       ),

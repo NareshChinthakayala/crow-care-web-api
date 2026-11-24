@@ -1,21 +1,20 @@
-import { Link, useNavigate } from "react-router-dom";
-import { AuthLayout } from "../../components/layout/AuthLayout";
-import { Button } from "../../components/ui/Button";
-import { Field, FormError } from "../../components/ui/Field";
-import { ROUTES } from "../../constants";
+import { Button } from "../../Components/ui/Button";
+import { Field, FormError } from "../../Components/ui/Field";
 import { useAuth } from "../../context/auth-context";
 import { useToast } from "../../context/toast-context";
 import { useAsyncAction } from "../../hooks/useAsyncAction";
 import { formValues } from "../../utils/format";
 
-export default function AdminLogin() {
+/**
+ * Admin email + password form.
+ * After a successful login the Login page redirects to the dashboard automatically.
+ */
+export function AdminLoginForm({ onCreateAccount }) {
   const { loginAdmin } = useAuth();
   const showToast = useToast();
-  const navigate = useNavigate();
 
   const { run, pending, error } = useAsyncAction(async ({ email, password, remember }) => {
     await loginAdmin({ email, password }, remember === "on");
-    navigate(ROUTES.dashboard);
   });
 
   function handleSubmit(e) {
@@ -24,12 +23,8 @@ export default function AdminLogin() {
   }
 
   return (
-    <AuthLayout
-      heading="Welcome back, Admin"
-      intro="Log in to manage today's orders and your styling team."
-      cardTitle="Admin login"
-    >
-      <div className="demo-note">Demo: admin@crowncare.com / admin123</div>
+    <>
+      <div className="demo-note">Demo login: admin@crowncare.com / admin123</div>
 
       <form onSubmit={handleSubmit}>
         <Field label="Email" name="email" type="email" required autoComplete="username" defaultValue="admin@crowncare.com" />
@@ -46,18 +41,16 @@ export default function AdminLogin() {
 
         <FormError message={error} />
         <Button type="submit" block disabled={pending}>
-          {pending ? "Logging in…" : "Log in"}
+          {pending ? "Logging in…" : "Log in as Admin"}
         </Button>
       </form>
 
       <div className="auth-foot">
-        New salon? <Link to={ROUTES.adminRegister}>Register as admin</Link>
+        New wig studio?{" "}
+        <button type="button" className="link-button strong" onClick={onCreateAccount}>
+          Create an admin account
+        </button>
       </div>
-      <div className="auth-foot">
-        <Link to={ROUTES.employeeLogin} className="muted">
-          Employee login →
-        </Link>
-      </div>
-    </AuthLayout>
+    </>
   );
 }

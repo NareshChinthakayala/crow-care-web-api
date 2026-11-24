@@ -1,28 +1,23 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import { AdminLayout } from "./components/layout/AdminLayout";
-import { EmployeeLayout } from "./components/layout/EmployeeLayout";
-import { RequireAuth } from "./components/layout/RequireAuth";
+import { AdminLayout } from "./Components/layout/AdminLayout";
+import { EmployeeLayout } from "./Components/layout/EmployeeLayout";
+import { RequireAuth } from "./Components/layout/RequireAuth";
 import { ROLES, ROUTES } from "./constants";
 import { AuthProvider } from "./context/AuthProvider";
 import { DataProvider } from "./context/DataProvider";
 import { ToastProvider } from "./context/ToastProvider";
-import Dashboard from "./pages/admin/Dashboard";
-import Employees from "./pages/admin/Employees";
-import Orders from "./pages/admin/Orders";
-import Products from "./pages/admin/Products";
-import AdminLogin from "./pages/auth/AdminLogin";
-import AdminRegister from "./pages/auth/AdminRegister";
-import EmployeeLogin from "./pages/auth/EmployeeLogin";
-import MyAppointments from "./pages/employee/MyAppointments";
-import Home from "./pages/Home";
+import Dashboard from "./Pages/admin/Dashboard";
+import Employees from "./Pages/admin/Employees";
+import Orders from "./Pages/admin/Orders";
+import Products from "./Pages/admin/Products";
+import MyAppointments from "./Pages/employee/MyAppointments";
+import Login from "./Pages/Login";
 
 /**
  * Route map of the whole app:
- *   /                         start page (choose Admin or Employee)
- *   /admin/login | /register  admin auth
- *   /employee/login           stylist auth
- *   /admin/*                  admin panel (login required)
- *   /employee/appointments    stylist's appointments (login required)
+ *   /                         login screen (Admin / Employee tabs)
+ *   /admin/*                  admin panel (admin login required)
+ *   /employee/appointments    stylist's appointments (employee login required)
  */
 export default function App() {
   return (
@@ -30,10 +25,7 @@ export default function App() {
       <ToastProvider>
         <AuthProvider>
           <Routes>
-            <Route path={ROUTES.home} element={<Home />} />
-            <Route path={ROUTES.adminLogin} element={<AdminLogin />} />
-            <Route path={ROUTES.adminRegister} element={<AdminRegister />} />
-            <Route path={ROUTES.employeeLogin} element={<EmployeeLogin />} />
+            <Route path={ROUTES.login} element={<Login />} />
 
             <Route
               path="/admin"
@@ -66,7 +58,8 @@ export default function App() {
               <Route path="appointments" element={<MyAppointments />} />
             </Route>
 
-            <Route path="*" element={<Navigate to={ROUTES.home} replace />} />
+            {/* Unknown URL → back to login */}
+            <Route path="*" element={<Navigate to={ROUTES.login} replace />} />
           </Routes>
         </AuthProvider>
       </ToastProvider>

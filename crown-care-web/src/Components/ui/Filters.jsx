@@ -1,5 +1,6 @@
 import { isCustomDate } from "../../utils/date";
 import { cx } from "../../utils/format";
+import { Icon } from "./Icon";
 
 /**
  * Row of pill buttons. items: [{ value, label, count? }]
@@ -48,9 +49,11 @@ export function DateFilter({ options, value, onChange }) {
 
 export const FilterLabel = ({ children }) => <div className="filter-label">{children}</div>;
 
+/** Text input with a magnifier icon. Place it inside a toolbar or card header. */
 export function SearchBox({ value, onChange, placeholder }) {
   return (
-    <div className="toolbar">
+    <div className="search">
+      <Icon name="search" />
       <input
         type="search"
         className="input"

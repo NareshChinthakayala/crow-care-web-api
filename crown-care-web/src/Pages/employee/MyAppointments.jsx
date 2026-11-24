@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { EmptyState, PageHeader, StatCard, StatGrid } from "../../components/ui/Display";
-import { DateFilter, FilterLabel } from "../../components/ui/Filters";
+import { EmptyState, PageHeader, StatCard, StatGrid } from "../../Components/ui/Display";
+import { DateFilter, FilterLabel } from "../../Components/ui/Filters";
 import { EMPLOYEE_DATE_FILTERS } from "../../constants";
 import { useAuth } from "../../context/auth-context";
 import { useData } from "../../context/data-context";

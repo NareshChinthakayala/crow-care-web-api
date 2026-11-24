@@ -1,0 +1,94 @@
+/* =====================================================================
+   ANIMATIONS — all motion in the app lives here.
+
+   Performance rules followed in this file:
+   • Only animate `transform` and `opacity` (the browser does these on the GPU,
+     no layout re-calculation).
+   • Short durations (0.15s – 0.45s). Nothing runs forever except the small
+     wig drawing on the login screen.
+   • No per-row animation on tables (they can have many rows).
+   • Users who turn on "reduce motion" in their OS get no animation at all.
+   ===================================================================== */
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes pop-in {
+  from { opacity: 0; transform: scale(0.96) translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes grow-x {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+/* ---------- Page change: new page gently slides up ---------- */
+.page-enter { animation: fade-up 0.35s ease-out both; }
+
+/* ---------- Dashboard banner + timeline ---------- */
+.banner { animation: fade-up 0.4s ease-out both; }
+.banner-art { animation: float 6s ease-in-out infinite; } /* small element, transform only */
+.slot { animation: fade-up 0.35s ease-out both; }
+.slot:nth-child(2) { animation-delay: 0.04s; }
+.slot:nth-child(3) { animation-delay: 0.08s; }
+.slot:nth-child(4) { animation-delay: 0.12s; }
+.slot:nth-child(n + 5) { animation-delay: 0.16s; }
+
+/* ---------- Stat cards: appear one after another, lift on hover ---------- */
+.stats > .card { animation: fade-up 0.4s ease-out both; }
+.stats > .card:nth-child(2) { animation-delay: 0.05s; }
+.stats > .card:nth-child(3) { animation-delay: 0.1s; }
+.stats > .card:nth-child(4) { animation-delay: 0.15s; }
+.stat { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.stat:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+.stat-icon { transition: transform 0.2s ease; }
+.stat:hover .stat-icon { transform: scale(1.08) rotate(-4deg); }
+
+/* ---------- Buttons: smooth colour change + small "press" ---------- */
+.btn { transition: background-color 0.15s, border-color 0.15s, color 0.15s, box-shadow 0.15s, transform 0.1s; }
+.btn:active:not(:disabled) { transform: scale(0.97); }
+.btn-primary:hover:not(:disabled) { box-shadow: 0 4px 14px var(--primary-glow); }
+
+/* ---------- Progress bars fill from the left when they appear ---------- */
+/* Progress bars, stock meters and the pipeline bar all fill from the left */
+.progress span,
+.meter-track span,
+.pipeline-bar span { transform-origin: left center; animation: grow-x 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+
+/* ---------- Menu: icon nudges on hover ---------- */
+.sidebar nav a .ico,
+.card-link .ico { transition: transform 0.2s ease; }
+.sidebar nav a:hover .ico,
+.card-link:hover .ico { transform: translateX(3px); }
+
+/* ---------- Popups: backdrop fades, box pops in ---------- */
+.modal-bg { animation: fade-in 0.2s ease-out; }
+@media (min-width: 640px) {
+  .modal { animation: pop-in 0.22s ease-out; }
+}
+
+/* ---------- Login screen ---------- */
+.login-card { animation: fade-up 0.45s ease-out both; }
+.login-hero-body { animation: fade-up 0.5s ease-out 0.1s both; }
+.login-art { animation: float 5s ease-in-out infinite; } /* tiny element, transform only */
+.tab-panel { animation: fade-in 0.25s ease-out; }       /* form swaps when changing tab */
+
+/* ---------- Respect "reduce motion" accessibility setting ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

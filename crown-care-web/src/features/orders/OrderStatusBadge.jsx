@@ -1,4 +1,4 @@
-import { Badge } from "../../components/ui/Display";
+import { Badge } from "../../Components/ui/Display";
 import { STATUS_META } from "../../constants";
 
 export function OrderStatusBadge({ status }) {

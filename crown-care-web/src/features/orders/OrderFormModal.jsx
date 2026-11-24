@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Field, FieldRow } from "../../components/ui/Field";
-import { FormModal } from "../../components/ui/Modal";
+import { Field, FieldRow } from "../../Components/ui/Field";
+import { FormModal } from "../../Components/ui/Modal";
 import { EMPLOYEE_STATUS, ORDER_SOURCES } from "../../constants";
 import { useData } from "../../context/data-context";
 import { useToast } from "../../context/toast-context";

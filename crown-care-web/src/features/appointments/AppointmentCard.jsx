@@ -1,5 +1,5 @@
-import { Button } from "../../components/ui/Button";
-import { ProgressBar } from "../../components/ui/Display";
+import { Button } from "../../Components/ui/Button";
+import { ProgressBar } from "../../Components/ui/Display";
 import { ORDER_STATUS, PROGRESS_STEP } from "../../constants";
 import { useData } from "../../context/data-context";
 import { useToast } from "../../context/toast-context";

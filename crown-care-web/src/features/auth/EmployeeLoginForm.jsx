@@ -1,26 +1,26 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import { authApi } from "../../api";
-import { AuthLayout } from "../../components/layout/AuthLayout";
-import { Button } from "../../components/ui/Button";
-import { Avatar, Badge } from "../../components/ui/Display";
-import { Field, FormError } from "../../components/ui/Field";
-import { EMPLOYEE_STATUS, ROUTES } from "../../constants";
+import { Button } from "../../Components/ui/Button";
+import { Avatar, Badge } from "../../Components/ui/Display";
+import { Field, FormError } from "../../Components/ui/Field";
+import { EMPLOYEE_STATUS } from "../../constants";
 import { useAuth } from "../../context/auth-context";
 import { useToast } from "../../context/toast-context";
 import { useAsyncAction } from "../../hooks/useAsyncAction";
 
-export default function EmployeeLogin() {
+/**
+ * Employee (stylist) login with email OR employee ID.
+ * After a successful login the Login page redirects to "My appointments" automatically.
+ */
+export function EmployeeLoginForm() {
   const { loginEmployee } = useAuth();
   const showToast = useToast();
-  const navigate = useNavigate();
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
 
   const { run, pending, error, clearError } = useAsyncAction(async () => {
     const employee = await loginEmployee({ identifier, password });
     showToast(`Welcome, ${employee.name.split(" ")[0]}`);
-    navigate(ROUTES.myAppointments);
   });
 
   function handleSubmit(e) {
@@ -35,20 +35,7 @@ export default function EmployeeLogin() {
   }
 
   return (
-    <AuthLayout
-      heading="Stylist login"
-      intro="See the appointments assigned to you and update them when done."
-      cardTitle="Employee login"
-    >
-      <ol className="steps-help">
-        <li>
-          Enter the <b>email</b> or <b>Employee ID</b> given by your admin
-        </li>
-        <li>
-          Enter your <b>password</b> and tap Log in
-        </li>
-      </ol>
-
+    <>
       <form onSubmit={handleSubmit}>
         <Field
           label="Email or Employee ID"
@@ -69,18 +56,12 @@ export default function EmployeeLogin() {
         />
         <FormError message={error} />
         <Button type="submit" block disabled={pending}>
-          {pending ? "Logging in…" : "Log in"}
+          {pending ? "Logging in…" : "Log in as Employee"}
         </Button>
       </form>
 
       <DemoAccounts onPick={fillDemoAccount} />
-
-      <div className="auth-foot">
-        <Link to={ROUTES.adminLogin} className="muted">
-          Admin login →
-        </Link>
-      </div>
-    </AuthLayout>
+    </>
   );
 }
 
@@ -94,8 +75,8 @@ function DemoAccounts({ onPick }) {
 
   return (
     <div className="demo-box">
-      <div className="small strong mb-4">Demo accounts (for presentation) — tap one to fill</div>
-      {accounts.map((acct) => (
+      {/* <div className="small strong mb-4">Demo accounts — tap one to fill</div> */}
+      {/* {accounts.map((acct) => (
         <button key={acct.id} type="button" className="acct" onClick={() => onPick(acct)}>
           <Avatar name={acct.name} size="sm" />
           <div className="grow">
@@ -112,7 +93,7 @@ function DemoAccounts({ onPick }) {
             <Badge>On leave</Badge>
           )}
         </button>
-      ))}
+      ))} */}
     </div>
   );
 }

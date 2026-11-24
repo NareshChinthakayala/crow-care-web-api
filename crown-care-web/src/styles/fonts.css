@@ -1,0 +1,35 @@
+/* =====================================================================
+   FONTS — the whole app uses exactly TWO font families.
+
+   1. Body font    (Inter)            → ALL text: titles, tables, buttons, inputs
+   2. Heading font (Playfair Display) → ONLY the "CrownCare" logo word
+
+   To change a font: edit the Google Fonts link + the two variables below.
+   Do NOT write `font-family` anywhere else (components, global.css, JSX).
+   ===================================================================== */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap");
+
+:root {
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-heading: "Playfair Display", Georgia, serif;
+}
+
+/* 1. Body font — everything, including form controls and <code> (no third font) */
+body,
+button,
+input,
+select,
+textarea,
+code {
+  font-family: var(--font-body);
+}
+
+/* 2. Heading font — logo only, so page titles match the tables and cards below them. */
+.brand-text {
+  font-family: var(--font-heading);
+}
+
+/* Small "WIG STUDIO" line under the logo stays in the body font */
+.brand-text small {
+  font-family: var(--font-body);
+}

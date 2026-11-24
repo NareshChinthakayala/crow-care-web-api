@@ -1,15 +1,22 @@
 import { Link } from "react-router-dom";
 import { ROUTES } from "../../constants";
+import { Icon } from "./Icon";
 
-/** "C CrownCare" logo. Links to the start page unless `link={false}`. */
+/** Crown logo + "CrownCare / Wig Studio". Links to the login screen unless `link={false}`. */
 export function Brand({ link = true }) {
   const content = (
     <>
-      <span className="logo">C</span>CrownCare
+      <span className="logo">
+        <Icon name="crown" />
+      </span>
+      <span className="brand-text">
+        CrownCare
+        <small>Wig Studio</small>
+      </span>
     </>
   );
   return link ? (
-    <Link to={ROUTES.home} className="brand">
+    <Link to={ROUTES.login} className="brand">
       {content}
     </Link>
   ) : (

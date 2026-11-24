@@ -1,10 +1,7 @@
 /** App-wide constants. Change a value here and every screen picks it up. */
 
 export const ROUTES = {
-  home: "/",
-  adminLogin: "/admin/login",
-  adminRegister: "/admin/register",
-  employeeLogin: "/employee/login",
+  login: "/", // one login screen for everyone, with Admin / Employee tabs
   dashboard: "/admin/dashboard",
   orders: "/admin/orders",
   products: "/admin/products",
@@ -13,6 +10,9 @@ export const ROUTES = {
 };
 
 export const ROLES = { ADMIN: "admin", EMPLOYEE: "employee" };
+
+/** Login screen opened on a given tab, e.g. loginUrl(ROLES.EMPLOYEE) → "/?tab=employee" */
+export const loginUrl = (role) => `${ROUTES.login}?tab=${role}`;
 
 /* ---------- Orders ---------- */
 export const ORDER_STATUS = {
@@ -44,6 +44,7 @@ export const DEFAULT_EMPLOYEE_PASSWORD = "welcome123";
 /* ---------- Products ---------- */
 export const STOCK_LOW = 9; // shown in amber and listed on the dashboard
 export const STOCK_CRITICAL = 5; // shown in red
+export const STOCK_FULL = 30; // "full shelf" — the stock meter is 100% at this level
 
 /* ---------- Date filter chips ---------- */
 export const ADMIN_DATE_FILTERS = [

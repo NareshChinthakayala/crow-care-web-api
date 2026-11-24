@@ -13,12 +13,23 @@ import { EmptyState } from "./Display";
  *   main,                this cell is the card title on phones
  *   hideOnMobile,        hide this column on phones
  *   nowrap,              keep content on one line
+ *   align: "right",      right-align (use for prices, numbers and action buttons)
  * }]
+ *
+ * rowClassName(row): optional CSS class for a row, e.g. "rail-red" for a coloured left edge
  *
  * groupBy(row) + groupLabel(key): insert a heading row whenever the group changes
  * (rows should already be sorted by that group).
  */
-export function DataTable({ columns, rows, rowKey = (row) => row.id, groupBy, groupLabel, emptyMessage = "Nothing to show." }) {
+export function DataTable({
+  columns,
+  rows,
+  rowKey = (row) => row.id,
+  rowClassName,
+  groupBy,
+  groupLabel,
+  emptyMessage = "Nothing to show.",
+}) {
   if (!rows.length) return <EmptyState>{emptyMessage}</EmptyState>;
 
   return (
@@ -26,7 +37,7 @@ export function DataTable({ columns, rows, rowKey = (row) => row.id, groupBy, gr
       <thead>
         <tr>
           {columns.map((col) => (
-            <th key={col.key} className={cx(col.hideOnMobile && "hide-m")}>
+            <th key={col.key} className={cx(col.hideOnMobile && "hide-m", col.align === "right" && "ta-right")}>
               {col.header}
             </th>
           ))}
@@ -43,12 +54,17 @@ export function DataTable({ columns, rows, rowKey = (row) => row.id, groupBy, gr
                   <td colSpan={columns.length}>{groupLabel ? groupLabel(group) : group}</td>
                 </tr>
               )}
-              <tr>
+              <tr className={rowClassName?.(row)}>
                 {columns.map((col) => (
                   <td
                     key={col.key}
                     data-label={col.label ?? col.header}
-                    className={cx(col.main && "td-main", col.hideOnMobile && "hide-m", col.nowrap && "nowrap")}
+                    className={cx(
+                      col.main && "td-main",
+                      col.hideOnMobile && "hide-m",
+                      col.nowrap && "nowrap",
+                      col.align === "right" && "ta-right",
+                    )}
                   >
                     {col.render ? col.render(row, i) : row[col.key]}
                   </td>

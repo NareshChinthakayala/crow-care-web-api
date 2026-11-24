@@ -1,0 +1,116 @@
+/* =====================================================================
+   THEMES — all app colours live here.
+
+   HOW TO SWITCH THEME: in index.html change  <html data-theme="rose">
+   to another name below (rose | espresso | mulberry). Nothing else changes.
+
+   HOW TO ADD A THEME: copy one [data-theme="…"] block, rename it, and
+   change the colours. Never write colours directly in components.
+   ===================================================================== */
+
+/* ---------- Shared by every theme ---------- */
+:root {
+  /* Status colours (badges, progress, status rails) */
+  --green: #15803d;
+  --green-l: #e7f6ec;
+  --blue: #2557d6;
+  --blue-l: #e8eefd;
+  --amber: #b45309;
+  --amber-l: #fdf3e1;
+  --red: #c0262d;
+  --red-l: #fdecec;
+
+  --radius: 16px;
+}
+
+/* ---------- Rose Gold (default) — warm, elegant, beauty-salon feel ---------- */
+:root,
+[data-theme="rose"] {
+  --primary: #b03a5b;    /* buttons, links, active tab */
+  --primary-d: #8e2c48;  /* hover / darker text */
+  --primary-l: #fcecf1;  /* soft backgrounds (tags, selected rows) */
+  --primary-glow: rgba(176, 58, 91, 0.28); /* button hover shadow */
+  --gold: #c8963e;       /* crown on the wig drawing */
+  --gold-l: #ecd3a5;
+
+  --ink: #22181c;        /* main text */
+  --muted: #76696e;      /* secondary text */
+  --line: #eee4e6;       /* borders */
+  --line-strong: #dfd2d7;
+  --bg: #f7f2f0;         /* page background (warm canvas) */
+  --card: #ffffff;
+  --soft: #fbf8f7;       /* table headers, group rows, hover */
+  --gray-l: #f3eced;
+
+  --shadow: 0 1px 2px rgba(34, 24, 28, 0.04), 0 4px 16px rgba(34, 24, 28, 0.05);
+  --shadow-lg: 0 14px 34px rgba(34, 24, 28, 0.12);
+  --overlay: rgba(34, 24, 28, 0.45); /* behind popups */
+  --hero: linear-gradient(135deg, #2a1a1f 0%, #5a2438 55%, #b03a5b 100%); /* login + dashboard banner */
+
+  /* Sidebar (dark espresso) */
+  --side-bg: #231619;
+  --side-ink: #f6eef0;
+  --side-muted: #a8979c;
+  --side-hover: rgba(255, 255, 255, 0.06);
+  --side-line: rgba(255, 255, 255, 0.08);
+}
+
+/* ---------- Espresso & Honey — natural hair colours (dark brown + honey blonde) ---------- */
+[data-theme="espresso"] {
+  --primary: #8a5a2b;
+  --primary-d: #6e4520;
+  --primary-l: #f7efe6;
+  --primary-glow: rgba(138, 90, 43, 0.28);
+  --gold: #d9a441;
+  --gold-l: #f0d6a0;
+
+  --ink: #231a14;
+  --muted: #75695f;
+  --line: #ede5dd;
+  --line-strong: #dccfc2;
+  --bg: #f6f1eb;
+  --card: #ffffff;
+  --soft: #fbf8f4;
+  --gray-l: #f3ede6;
+
+  --shadow: 0 1px 2px rgba(35, 26, 20, 0.04), 0 4px 16px rgba(35, 26, 20, 0.05);
+  --shadow-lg: 0 14px 34px rgba(35, 26, 20, 0.12);
+  --overlay: rgba(35, 26, 20, 0.45);
+  --hero: linear-gradient(135deg, #1f1510 0%, #3d2718 55%, #8a5a2b 100%);
+
+  --side-bg: #1f1712;
+  --side-ink: #f5efe9;
+  --side-muted: #a69a8f;
+  --side-hover: rgba(255, 255, 255, 0.06);
+  --side-line: rgba(255, 255, 255, 0.08);
+}
+
+/* ---------- Mulberry — the earlier wig-studio look ---------- */
+[data-theme="mulberry"] {
+  --primary: #7a2e5c;
+  --primary-d: #5c1f44;
+  --primary-l: #f6ebf2;
+  --primary-glow: rgba(122, 46, 92, 0.28);
+  --gold: #c9a227;
+  --gold-l: #e7c88f;
+
+  --ink: #1e1524;
+  --muted: #6c6375;
+  --line: #ebe6ef;
+  --line-strong: #d9d2de;
+  --bg: #f5f1f6;
+  --card: #ffffff;
+  --soft: #fbf9fc;
+  --gray-l: #f1eef3;
+
+  --shadow: 0 1px 2px rgba(30, 21, 36, 0.04), 0 6px 18px rgba(30, 21, 36, 0.05);
+  --shadow-lg: 0 14px 34px rgba(30, 21, 36, 0.12);
+  --overlay: rgba(30, 21, 36, 0.5);
+  --hero: linear-gradient(135deg, #1e1524 0%, #4a1a3a 55%, #7a2e5c 100%);
+
+  --side-bg: #1e1524;
+  --side-ink: #f5eef4;
+  --side-muted: #a497a8;
+  --side-hover: rgba(255, 255, 255, 0.06);
+  --side-line: rgba(255, 255, 255, 0.08);
+}

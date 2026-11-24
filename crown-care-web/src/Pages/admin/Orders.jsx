@@ -1,13 +1,15 @@
 import { useState } from "react";
-import { Button } from "../../components/ui/Button";
-import { DataTable } from "../../components/ui/DataTable";
-import { Card, PageHeader } from "../../components/ui/Display";
-import { DateFilter, FilterLabel, SearchBox, Tabs } from "../../components/ui/Filters";
+import { useSearchParams } from "react-router-dom";
+import { Button } from "../../Components/ui/Button";
+import { DataTable } from "../../Components/ui/DataTable";
+import { Card, PageHeader } from "../../Components/ui/Display";
+import { DateFilter, SearchBox } from "../../Components/ui/Filters";
 import { ADMIN_DATE_FILTERS, ORDER_STATUS, STATUS_META } from "../../constants";
 import { useData } from "../../context/data-context";
 import { AssignOrderModal } from "../../features/orders/AssignOrderModal";
 import { OrderDetailModal } from "../../features/orders/OrderDetailModal";
 import { OrderFormModal } from "../../features/orders/OrderFormModal";
+import { StatusFilter } from "../../features/orders/StatusFilter";
 import { useOrderColumns } from "../../features/orders/useOrderColumns";
 import { dateFilterLabel, dateHeading, matchesDateFilter } from "../../utils/date";
 import { money, plural } from "../../utils/format";
@@ -17,9 +19,11 @@ const ALL = "All";
 
 export default function Orders() {
   const { orders, getProduct } = useData();
+  // Links like /admin/orders?status=New&date=all (from the dashboard) pre-select the filters
+  const [searchParams] = useSearchParams();
   const [search, setSearch] = useState("");
-  const [dateFilter, setDateFilter] = useState("today");
-  const [statusFilter, setStatusFilter] = useState(ALL);
+  const [dateFilter, setDateFilter] = useState(searchParams.get("date") ?? "today");
+  const [statusFilter, setStatusFilter] = useState(searchParams.get("status") ?? ALL);
   const [modal, setModal] = useState(null); // { type: "create" | "detail" | "assign", orderId? }
   const closeModal = () => setModal(null);
 
@@ -28,12 +32,13 @@ export default function Orders() {
     onAssign: (orderId) => setModal({ type: "assign", orderId }),
   });
 
-  // 1. date filter → 2. status tab → 3. search text
+  // 1. date filter → 2. status tile → 3. search text
   const inDateRange = orders.filter((o) => matchesDateFilter(o.date, dateFilter));
 
-  const statusTabs = [ALL, ...Object.values(ORDER_STATUS)].map((status) => ({
+  const statusTiles = [ALL, ...Object.values(ORDER_STATUS)].map((status) => ({
     value: status,
-    label: status === ALL ? ALL : STATUS_META[status].label,
+    label: status === ALL ? "All orders" : STATUS_META[status].label,
+    tone: status === ALL ? "primary" : STATUS_META[status].tone,
     count: status === ALL ? inDateRange.length : inDateRange.filter((o) => o.status === status).length,
   }));
 
@@ -57,27 +62,30 @@ export default function Orders() {
     <>
       <PageHeader
         title="Orders"
-        subtitle="Offline orders (walk-in / phone) — assign to employees and track progress"
-        action={<Button onClick={() => setModal({ type: "create" })}>+ Add order</Button>}
+        subtitle="Walk-in and phone orders — assign them to stylists and track progress."
+        action={
+          <Button icon="plus" onClick={() => setModal({ type: "create" })}>
+            Add order
+          </Button>
+        }
       />
 
-      <SearchBox value={search} onChange={setSearch} placeholder="Search customer, order ID or service…" />
+      {/* ---- Status board (also the status filter) ---- */}
+      <StatusFilter items={statusTiles} value={statusFilter} onChange={setStatusFilter} />
 
-      <FilterLabel>Date</FilterLabel>
-      <DateFilter options={ADMIN_DATE_FILTERS} value={dateFilter} onChange={setDateFilter} />
-
-      <FilterLabel>Status</FilterLabel>
-      <Tabs items={statusTabs} value={statusFilter} onChange={setStatusFilter} />
-
-      <div className="result-line">
-        Showing <b>{plural(visible.length, "order")}</b> for <b>{dateFilterLabel(dateFilter)}</b> · value{" "}
-        {money(totalValue(visible, getProduct))}
-      </div>
-
-      <Card>
+      {/* ---- Results ---- */}
+      <Card
+        title={`Orders · ${dateFilterLabel(dateFilter)}`}
+        subtitle={`${plural(visible.length, "order")} · ${money(totalValue(visible, getProduct))} total value`}
+        action={<SearchBox value={search} onChange={setSearch} placeholder="Search orders…" />}
+      >
+        <div className="card-toolbar">
+          <DateFilter options={ADMIN_DATE_FILTERS} value={dateFilter} onChange={setDateFilter} />
+        </div>
         <DataTable
           columns={columns}
           rows={visible}
+          rowClassName={(o) => `rail-${STATUS_META[o.status]?.tone ?? "gray"}`}
           groupBy={(o) => o.date}
           groupLabel={dateHeading}
           emptyMessage="No orders for this date / status. Try another date."

@@ -1,6 +1,6 @@
-import { Button } from "../../components/ui/Button";
-import { Detail, ProgressBar } from "../../components/ui/Display";
-import { Modal, ModalFooter } from "../../components/ui/Modal";
+import { Button } from "../../Components/ui/Button";
+import { Detail, ProgressBar } from "../../Components/ui/Display";
+import { Modal, ModalFooter } from "../../Components/ui/Modal";
 import { ORDER_TIMELINE, STATUS_META } from "../../constants";
 import { useData } from "../../context/data-context";
 import { relativeDay } from "../../utils/date";

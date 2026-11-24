@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { demoApi, employeesApi, ordersApi, productsApi } from "../api";
-import { Button } from "../components/ui/Button";
+import { Button } from "../Components/ui/Button";
+import { WigArt, WigLoader } from "../Components/ui/WigLoader";
 import { DataContext } from "./data-context";
 
 const EMPTY = { products: [], employees: [], orders: [] };
@@ -66,11 +67,12 @@ export function DataProvider({ children }) {
     };
   }, [data]);
 
-  if (status === "loading") return <div className="page-loader">Loading…</div>;
+  if (status === "loading") return <WigLoader fullScreen message="Bringing out the wig collection…" />;
   if (status === "error") {
     return (
       <div className="page-loader">
-        <p>Couldn&apos;t load salon data.</p>
+        <WigArt size={72} />
+        <p>Couldn&apos;t load your wig studio data.</p>
         <Button
           onClick={() => {
             setStatus("loading");

@@ -1,5 +1,5 @@
-import { Avatar } from "../../components/ui/Display";
-import { FormModal } from "../../components/ui/Modal";
+import { Avatar } from "../../Components/ui/Display";
+import { FormModal } from "../../Components/ui/Modal";
 import { EMPLOYEE_STATUS, ORDER_STATUS } from "../../constants";
 import { useData } from "../../context/data-context";
 import { useToast } from "../../context/toast-context";

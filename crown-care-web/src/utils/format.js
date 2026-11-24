@@ -1,7 +1,8 @@
 /** Small display helpers. */
 
-/** 35 → "$35", 12.99 → "$12.99" */
-export const money = (n) => "$" + Number(n).toFixed(2).replace(/\.00$/, "");
+/** 35 → "$35", 12.99 → "$12.99", 1948.5 → "$1,948.50" */
+export const money = (n) =>
+  "$" + Number(n).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).replace(/\.00$/, "");
 
 /** "Naomi Adebayo" → "NA" */
 export const initials = (name = "") =>
